@@ -14,37 +14,50 @@
   </header>
 
   <main>
-    <div class="grid">
-
-      <a href="recipe.html" class="card">
-        <div class="card-emoji">🫘</div>
-        <div class="card-body">
-          <div class="card-title">Classic Hummus</div>
-          <div class="card-meta">10 min · Easy</div>
-          <div class="card-desc">Creamy, smooth hummus made from scratch.</div>
-        </div>
-      </a>
-
-      <a href="#" class="card coming-soon">
-        <div class="card-emoji">🥗</div>
-        <div class="card-body">
-          <div class="card-title">Israeli Salad</div>
-          <div class="card-meta">15 min · Easy</div>
-          <div class="card-desc">Coming soon...</div>
-        </div>
-      </a>
-
-      <a href="#" class="card coming-soon">
-        <div class="card-emoji">🍞</div>
-        <div class="card-body">
-          <div class="card-title">Pita Bread</div>
-          <div class="card-meta">45 min · Medium</div>
-          <div class="card-desc">Coming soon...</div>
-        </div>
-      </a>
-
+    <div class="grid" id="recipe-grid">
+      <!-- recipes will load here dynamically -->
     </div>
+
+    <button class="add-btn" id="open-form">+ Add Recipe</button>
   </main>
 
+  <!-- Add Recipe Form (hidden by default) -->
+  <div class="overlay" id="overlay">
+    <div class="form-card">
+      <h2>New Recipe</h2>
+
+      <label>Emoji</label>
+      <input type="text" id="emoji" placeholder="🍕" maxlength="2">
+
+      <label>Title</label>
+      <input type="text" id="title" placeholder="Recipe name">
+
+      <label>Prep Time</label>
+      <input type="text" id="prep_time" placeholder="20 min">
+
+      <label>Difficulty</label>
+      <select id="difficulty">
+        <option>Easy</option>
+        <option>Medium</option>
+        <option>Hard</option>
+      </select>
+
+      <label>Description</label>
+      <input type="text" id="description" placeholder="One line about the recipe">
+
+      <label>Ingredients (one per line)</label>
+      <textarea id="ingredients" rows="4" placeholder="400g chickpeas&#10;3 tbsp tahini"></textarea>
+
+      <label>Instructions (one per line)</label>
+      <textarea id="steps" rows="4" placeholder="Blend everything&#10;Add salt to taste"></textarea>
+
+      <div class="form-buttons">
+        <button id="cancel-btn">Cancel</button>
+        <button id="save-btn">Save Recipe</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>

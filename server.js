@@ -52,7 +52,14 @@ app.post('/api/recipes', (req, res) => {
     }
   );
 });
-
+// GET single recipe by id
+app.get('/api/recipes/:id', (req, res) => {
+  db.get('SELECT * FROM recipes WHERE id = ?', [req.params.id], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: 'Recipe not found' });
+    res.json(row);
+  });
+});
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
