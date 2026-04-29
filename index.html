@@ -9,22 +9,52 @@
 <body>
 
   <header>
-    <h1>📖 My Recipe Book</h1>
+    <svg viewBox="0 0 800 140" xmlns="http://www.w3.org/2000/svg">
+      <!-- tomato left -->
+      <circle cx="60" cy="75" r="28" fill="none" stroke="#B85C38" stroke-width="1.3"/>
+      <path d="M60 47 Q65 34 70 39" fill="none" stroke="#B85C38" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M60 47 Q54 33 45 38" fill="none" stroke="#B85C38" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M44 65 Q52 60 60 75 Q67 87 57 93" fill="none" stroke="#B85C38" stroke-width="0.9" stroke-linecap="round"/>
+      <!-- carrot -->
+      <path d="M680 25 Q700 55 692 95" fill="none" stroke="#B85C38" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M692 95 Q708 60 722 28" fill="none" stroke="#B85C38" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M680 25 Q700 18 722 28" fill="none" stroke="#B85C38" stroke-width="1.3"/>
+      <path d="M690 23 Q693 10 699 6" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M698 21 Q703 8 708 5" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M706 23 Q714 11 718 7" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <!-- lemon top center -->
+      <ellipse cx="400" cy="22" rx="24" ry="15" fill="none" stroke="#B85C38" stroke-width="1.3"/>
+      <path d="M378 19 Q390 13 400 22 Q410 29 422 24" fill="none" stroke="#B85C38" stroke-width="0.8" stroke-linecap="round"/>
+      <!-- herbs left center -->
+      <path d="M200 80 Q207 62 214 80" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M207 73 Q218 60 222 73" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M214 80 L214 105" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <!-- garlic right center -->
+      <ellipse cx="570" cy="82" rx="17" ry="20" fill="none" stroke="#B85C38" stroke-width="1.3"/>
+      <path d="M562 66 Q570 56 578 66" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M570 56 L570 45" fill="none" stroke="#B85C38" stroke-width="1.1" stroke-linecap="round"/>
+      <path d="M561 76 Q570 71 579 76" fill="none" stroke="#B85C38" stroke-width="0.8" stroke-linecap="round"/>
+      <path d="M561 83 Q570 79 579 83" fill="none" stroke="#B85C38" stroke-width="0.8" stroke-linecap="round"/>
+      <!-- strawberry -->
+      <path d="M320 95 Q328 75 336 95 Q332 112 328 115 Q324 112 320 95Z" fill="none" stroke="#B85C38" stroke-width="1.1"/>
+      <path d="M324 88 Q328 80 333 85" fill="none" stroke="#B85C38" stroke-width="1" stroke-linecap="round"/>
+      <circle cx="326" cy="97" r="1.2" fill="#B85C38"/>
+      <circle cx="330" cy="104" r="1.2" fill="#B85C38"/>
+      <circle cx="323" cy="104" r="1.2" fill="#B85C38"/>
+    </svg>
+    <h1>🍳 My Recipe Book</h1>
     <p>Simple, delicious recipes from my kitchen</p>
   </header>
 
   <main>
-    <div class="grid" id="recipe-grid">
-      <!-- recipes will load here dynamically -->
-    </div>
-
-    <button class="add-btn" id="open-form">+ Add Recipe</button>
+    <div class="section-label">My recipes</div>
+    <div class="grid" id="recipe-grid"></div>
   </main>
 
-  <!-- Add Recipe Form (hidden by default) -->
+  <!-- Add Recipe Form -->
   <div class="overlay" id="overlay">
     <div class="form-card">
-      <h2>New Recipe</h2>
+      <h2>✨ New Recipe</h2>
 
       <label>Emoji</label>
       <input type="text" id="emoji" placeholder="🍕" maxlength="2">

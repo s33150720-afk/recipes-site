@@ -7,11 +7,6 @@ async function loadRecipes() {
   const grid = document.getElementById('recipe-grid');
   grid.innerHTML = '';
 
-  if (recipes.length === 0) {
-    grid.innerHTML = '<p style="color:#888;">No recipes yet — add your first one!</p>';
-    return;
-  }
-
   recipes.forEach(recipe => {
     const card = document.createElement('a');
     card.className = 'card';
@@ -26,6 +21,18 @@ async function loadRecipes() {
     `;
     grid.appendChild(card);
   });
+
+  const addCard = document.createElement('div');
+  addCard.className = 'add-card';
+  addCard.id = 'open-form';
+  addCard.innerHTML = `
+    <div class="add-plus">+</div>
+    <div class="add-label">Add recipe</div>
+  `;
+  addCard.addEventListener('click', () => {
+    document.getElementById('overlay').style.display = 'flex';
+  });
+  grid.appendChild(addCard);
 }
 
 // Show/hide form
