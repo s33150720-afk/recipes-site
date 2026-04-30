@@ -36,6 +36,7 @@
         .join('');
 
       document.getElementById('recipe-container').innerHTML = `
+      
         <div class="recipe-hero">
           <span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>
           <div class="recipe-title">${recipe.title}</div>
@@ -57,6 +58,11 @@
           <button onclick="openEdit()" class="edit-btn">✏️ Edit Recipe</button>
         </div>
       `;
+      document.getElementById('edit-cancel').addEventListener('click', () => {
+    document.getElementById('edit-overlay').style.display = 'none';
+  });
+
+  document.getElementById('edit-save').addEventListener('click', async () => {
     });
 
   function openEdit() {
@@ -70,11 +76,7 @@
     document.getElementById('edit-overlay').style.display = 'flex';
   }
 
-  document.getElementById('edit-cancel').addEventListener('click', () => {
-    document.getElementById('edit-overlay').style.display = 'none';
-  });
-
-  document.getElementById('edit-save').addEventListener('click', async () => {
+  
     const updated = {
       emoji: document.getElementById('edit-emoji').value,
       title: document.getElementById('edit-title').value,
