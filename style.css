@@ -98,3 +98,87 @@ body {
   color: #C4A090;
   line-height: 1.6;
 }
+.edit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #FDE8DF;
+  color: #B85C38;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Comfortaa', sans-serif;
+  transition: background 0.2s;
+}
+
+.edit-btn:hover { background: #F5C8B8; }
+
+.form-card {
+  background: white;
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 0.5px solid #F5C8B8;
+}
+
+.form-card h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #B85C38;
+  margin-bottom: 8px;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+.form-card label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #D4856A;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  margin-top: 8px;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+  padding: 10px 14px;
+  border: 0.5px solid #F5C8B8;
+  border-radius: 10px;
+  font-size: 13px;
+  font-family: 'Comfortaa', sans-serif;
+  color: #7A3520;
+  background: #FFFAF8;
+  outline: none;
+}
+
+.form-card input:focus,
+.form-card textarea:focus { border-color: #E8845A; }
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.form-buttons button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Comfortaa', sans-serif;
+}
+
+#edit-cancel { background: #FDE8DF; color: #B85C38; }
+#edit-save { background: #B85C38; color: white; }
+#edit-save:hover { background: #A04E2E; }

@@ -3,57 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recipe</title>
+  <title>מתכון</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <a href="index.html" class="back-btn">← Back to recipes</a>
+  <a href="index.html" class="back-btn">← חזרה למתכונים</a>
 
   <div class="recipe-card" id="recipe-container">
     <p style="text-align:center; padding:40px; color:#888;">Loading...</p>
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  let currentRecipe = null;
 
-    fetch(`http://localhost:3000/api/recipes/${id}`)
-      .then(res => res.json())
-      .then(recipe => {
-        document.title = recipe.title;
+  fetch(`http://localhost:3000/api/recipes/${id}`)
+    .then(res => res.json())
+    .then(recipe => {
+      currentRecipe = recipe;
+      document.title = recipe.title;
 
-        const ingredients = recipe.ingredients
-          .split('\n')
-          .map(i => `<div class="ingredient"><span class="ingredient-amount">•</span><span>${i}</span></div>`)
-          .join('');
+      const ingredients = recipe.ingredients
+        .split('\n')
+        .map(i => `<div class="ingredient"><span class="ingredient-amount">•</span><span>${i}</span></div>`)
+        .join('');
 
-        const steps = recipe.steps
-          .split('\n')
-          .map((s, i) => `<div class="step"><div class="step-num">${i + 1}</div><div class="step-text">${s}</div></div>`)
-          .join('');
+      const steps = recipe.steps
+        .split('\n')
+        .map((s, i) => `<div class="step"><div class="step-num">${i + 1}</div><div class="step-text">${s}</div></div>`)
+        .join('');
 
-        document.getElementById('recipe-container').innerHTML = `
-          <div class="recipe-hero">
-            <span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>
-            <div class="recipe-title">${recipe.title}</div>
-            <div class="recipe-subtitle">${recipe.description}</div>
-          </div>
-          <div class="meta-row">
-            <div class="meta-item"><div class="meta-value">${recipe.prep_time}</div><div class="meta-label">Prep</div></div>
-            <div class="meta-item"><div class="meta-value">${recipe.difficulty}</div><div class="meta-label">Level</div></div>
-          </div>
-          <div class="section">
-            <div class="section-title">Ingredients</div>
-            ${ingredients}
-          </div>
-          <div class="section">
-            <div class="section-title">Instructions</div>
-            ${steps}
-          </div>
-        `;
-      });
-  </script>
+      document.getElementById('recipe-container').innerHTML = `
+        <div class="recipe-hero">
+          <span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>
+          <div class="recipe-title">${recipe.title}</div>
+          <div class="recipe-subtitle">${recipe.description}</div>
+        </div>
+        <div class="meta-row">
+          <div class="meta-item"><div class="meta-value">${recipe.prep_time}</div><div class="meta-label">Prep</div></div>
+          <div class="meta-item"><div class="meta-value">${recipe.difficulty}</div><div class="meta-label">Level</div></div>
+        </div>
+        <div class="section">
+          <div class="section-title">Ingredients</div>
+          ${ingredients}
+        </div>
+        <div class="section">
+          <div class="section-title">Instructions</div>
+          ${steps}
+        </div>
+        <div class="section">
+          <button onclick="openEdit()" class="edit-btn">✏️ Edit Recipe</button>
+        </div>
+      `;
+    });
 
+  function openEdit() {
+    document.getElementById('edit-emoji').value = currentRecipe.emoji || '';
+    document.getElementById('edit-title').value = currentRecipe.title;
+    document.getElementById('edit-prep_time').value = currentRecipe.prep_time;
+    document.getElementById('edit-difficulty').value = currentRecipe.difficulty;
+    document.getElementById('edit-description').value = currentRecipe.description;
+    document.getElementById('edit-ingredients').value = currentRecipe.ingredients;
+    document.getElementById('edit-steps').value = currentRecipe.steps;
+    document.getElementById('edit-overlay').style.display = 'flex';
+  }
+
+  document.getElementById('edit-cancel').addEventListener('click', () => {
+    document.getElementById('edit-overlay').style.display = 'none';
+  });
+
+  document.getElementById('edit-save').addEventListener('click', async () => {
+    const updated = {
+      emoji: document.getElementById('edit-emoji').value,
+      title: document.getElementById('edit-title').value,
+      prep_time: document.getElementById('edit-prep_time').value,
+      difficulty: document.getElementById('edit-difficulty').value,
+      description: document.getElementById('edit-description').value,
+      ingredients: document.getElementById('edit-ingredients').value,
+      steps: document.getElementById('edit-steps').value,
+    };
+
+    await fetch(`http://localhost:3000/api/recipes/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updated)
+    });
+
+    document.getElementById('edit-overlay').style.display = 'none';
+    location.reload();
+  });
+</script>
+<!-- Edit Recipe Form -->
+<div class="overlay" id="edit-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(122,53,32,0.3);justify-content:center;align-items:center;z-index:100;">
+  <div class="form-card">
+    <h2>✏️ Edit Recipe</h2>
+
+    <label>Emoji</label>
+    <input type="text" id="edit-emoji" maxlength="2">
+
+    <label>Title</label>
+    <input type="text" id="edit-title">
+
+    <label>Prep Time</label>
+    <input type="text" id="edit-prep_time">
+
+    <label>Difficulty</label>
+    <select id="edit-difficulty">
+      <option>Easy</option>
+      <option>Medium</option>
+      <option>Hard</option>
+    </select>
+
+    <label>Description</label>
+    <input type="text" id="edit-description">
+
+    <label>Ingredients (one per line)</label>
+    <textarea id="edit-ingredients" rows="4"></textarea>
+
+    <label>Instructions (one per line)</label>
+    <textarea id="edit-steps" rows="4"></textarea>
+
+    <div class="form-buttons">
+      <button id="edit-cancel">Cancel</button>
+      <button id="edit-save">Save Changes</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>

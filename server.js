@@ -60,6 +60,18 @@ app.get('/api/recipes/:id', (req, res) => {
     res.json(row);
   });
 });
+// UPDATE recipe by id
+app.put('/api/recipes/:id', (req, res) => {
+  const { title, emoji, prep_time, difficulty, description, ingredients, steps } = req.body;
+  db.run(
+    `UPDATE recipes SET title=?, emoji=?, prep_time=?, difficulty=?, description=?, ingredients=?, steps=? WHERE id=?`,
+    [title, emoji, prep_time, difficulty, description, ingredients, steps, req.params.id],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: 'Recipe updated!' });
+    }
+  );
+});
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

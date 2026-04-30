@@ -27,7 +27,7 @@ async function loadRecipes() {
   addCard.id = 'open-form';
   addCard.innerHTML = `
     <div class="add-plus">+</div>
-    <div class="add-label">Add recipe</div>
+    <div class="add-label"> הוסף מתכון</div>
   `;
   addCard.addEventListener('click', () => {
     document.getElementById('overlay').style.display = 'flex';
@@ -36,9 +36,9 @@ async function loadRecipes() {
 }
 
 // Show/hide form
-document.getElementById('open-form').addEventListener('click', () => {
-  document.getElementById('overlay').style.display = 'flex';
-});
+// document.getElementById('open-form').addEventListener('click', () => {
+//   document.getElementById('overlay').style.display = 'flex';
+// });
 document.getElementById('cancel-btn').addEventListener('click', () => {
   document.getElementById('overlay').style.display = 'none';
 });

@@ -42,48 +42,47 @@
       <circle cx="330" cy="104" r="1.2" fill="#B85C38"/>
       <circle cx="323" cy="104" r="1.2" fill="#B85C38"/>
     </svg>
-    <h1>🍳 My Recipe Book</h1>
-    <p>Simple, delicious recipes from my kitchen</p>
+<h1><img src="ice-cream.png" style="width:48px; height:48px; vertical-align:middle; margin-right:10px;">ספר המתכונים שלי</h1>    <p>פשוט, מתכונים טעימים מהמטבח שלי</p>
   </header>
 
   <main>
-    <div class="section-label">My recipes</div>
+    <div class="section-label">המתכונים שלי</div>
     <div class="grid" id="recipe-grid"></div>
   </main>
 
   <!-- Add Recipe Form -->
   <div class="overlay" id="overlay">
     <div class="form-card">
-      <h2>✨ New Recipe</h2>
+      <h2>✨ מתכון חדש</h2>
 
-      <label>Emoji</label>
+      <label>אמוג'י</label>
       <input type="text" id="emoji" placeholder="🍕" maxlength="2">
 
-      <label>Title</label>
+      <label>כותרת</label>
       <input type="text" id="title" placeholder="Recipe name">
 
-      <label>Prep Time</label>
+      <label>זמן הכנה</label>
       <input type="text" id="prep_time" placeholder="20 min">
 
-      <label>Difficulty</label>
+      <label>דרגת קושי</label>
       <select id="difficulty">
-        <option>Easy</option>
-        <option>Medium</option>
-        <option>Hard</option>
+        <option>קל</option>
+        <option>בינוני</option>
+        <option>קשה</option>
       </select>
 
-      <label>Description</label>
+      <label>תיאור</label>
       <input type="text" id="description" placeholder="One line about the recipe">
 
-      <label>Ingredients (one per line)</label>
+      <label>מצרכים (one per line)</label>
       <textarea id="ingredients" rows="4" placeholder="400g chickpeas&#10;3 tbsp tahini"></textarea>
 
-      <label>Instructions (one per line)</label>
+      <label>אופו הכנה (one per line)</label>
       <textarea id="steps" rows="4" placeholder="Blend everything&#10;Add salt to taste"></textarea>
 
       <div class="form-buttons">
-        <button id="cancel-btn">Cancel</button>
-        <button id="save-btn">Save Recipe</button>
+        <button id="cancel-btn">ביטול</button>
+        <button id="save-btn">שמור מתכון</button>
       </div>
     </div>
   </div>
