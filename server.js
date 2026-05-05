@@ -27,10 +27,13 @@ db.run(`
     difficulty TEXT,
     description TEXT,
     ingredients TEXT,
-    steps TEXT
+    steps TEXT,
+    category TEXT DEFAULT 'פרווה'
   )
 `);
-
+db.run(`ALTER TABLE recipes ADD COLUMN category TEXT DEFAULT 'פרווה'`, (err) => {
+  // ignore error if column already exists
+});
 // GET all recipes
 app.get('/api/recipes', (req, res) => {
   db.all('SELECT * FROM recipes', [], (err, rows) => {
@@ -41,11 +44,11 @@ app.get('/api/recipes', (req, res) => {
 
 // POST a new recipe
 app.post('/api/recipes', (req, res) => {
-  const { title, emoji, prep_time, difficulty, description, ingredients, steps } = req.body;
+  const { title, emoji, prep_time, difficulty, description, ingredients, steps, category } = req.body;
   db.run(
-    `INSERT INTO recipes (title, emoji, prep_time, difficulty, description, ingredients, steps)
-     VALUES (?, ?, ?, ?, ?, ?, ?)`,
-    [title, emoji, prep_time, difficulty, description, ingredients, steps],
+    `INSERT INTO recipes (title, emoji, prep_time, difficulty, description, ingredients, steps, category)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    [title, emoji, prep_time, difficulty, description, ingredients, steps, category],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
       res.json({ id: this.lastID, message: 'Recipe saved!' });
@@ -62,10 +65,10 @@ app.get('/api/recipes/:id', (req, res) => {
 });
 // UPDATE recipe by id
 app.put('/api/recipes/:id', (req, res) => {
-  const { title, emoji, prep_time, difficulty, description, ingredients, steps } = req.body;
+  const { title, emoji, prep_time, difficulty, description, ingredients, steps, category } = req.body;
   db.run(
-    `UPDATE recipes SET title=?, emoji=?, prep_time=?, difficulty=?, description=?, ingredients=?, steps=? WHERE id=?`,
-    [title, emoji, prep_time, difficulty, description, ingredients, steps, req.params.id],
+    `UPDATE recipes SET title=?, emoji=?, prep_time=?, difficulty=?, description=?, ingredients=?, steps=?, category=? WHERE id=?`,
+    [title, emoji, prep_time, difficulty, description, ingredients, steps, category, req.params.id],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
       res.json({ message: 'Recipe updated!' });

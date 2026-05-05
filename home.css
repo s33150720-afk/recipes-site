@@ -224,3 +224,42 @@ main {
 #cancel-btn { background: #FDE8DF; color: #B85C38; }
 #save-btn { background: #B85C38; color: white; }
 #save-btn:hover { background: #A04E2E; }
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border: 1px solid #F5C8B8;
+  border-radius: 20px;
+  background: white;
+  color: #B85C38;
+  font-size: 13px;
+  font-family: 'Comfortaa', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  background: #FDE8DF;
+}
+
+.filter-btn.active {
+  background: #B85C38;
+  color: white;
+  border-color: #B85C38;
+}
+
+.card-category {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 10px;
+  background: #FDE8DF;
+  color: #B85C38;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}

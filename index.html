@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Recipe Book</title>
   <link rel="stylesheet" href="home.css">
+  <html lang="he" dir="rtl"></html>
 </head>
 <body>
 
@@ -47,6 +48,12 @@
 
   <main>
     <div class="section-label">המתכונים שלי</div>
+    <div class="filters">
+  <button class="filter-btn active" onclick="filterRecipes('הכל')">הכל</button>
+  <button class="filter-btn" onclick="filterRecipes('פרווה')">פרווה</button>
+  <button class="filter-btn" onclick="filterRecipes('חלבי')">חלבי</button>
+  <button class="filter-btn" onclick="filterRecipes('בשרי')">בשרי</button>
+</div>
     <div class="grid" id="recipe-grid"></div>
   </main>
 
@@ -70,6 +77,13 @@
         <option>בינוני</option>
         <option>קשה</option>
       </select>
+
+      <label>קטגוריה</label>
+<select id="category">
+  <option>פרווה</option>
+  <option>חלבי</option>
+  <option>בשרי</option>
+</select>
 
       <label>תיאור</label>
       <input type="text" id="description" placeholder="One line about the recipe">

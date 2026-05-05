@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>מתכון</title>
   <link rel="stylesheet" href="style.css">
+  <html lang="he" dir="rtl"></html>
 </head>
 <body>
 
@@ -36,33 +37,52 @@
         .join('');
 
       document.getElementById('recipe-container').innerHTML = `
-      
         <div class="recipe-hero">
           <span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>
           <div class="recipe-title">${recipe.title}</div>
           <div class="recipe-subtitle">${recipe.description}</div>
         </div>
         <div class="meta-row">
-          <div class="meta-item"><div class="meta-value">${recipe.prep_time}</div><div class="meta-label">Prep</div></div>
-          <div class="meta-item"><div class="meta-value">${recipe.difficulty}</div><div class="meta-label">Level</div></div>
+          <div class="meta-item"><div class="meta-value">${recipe.prep_time}</div><div class="meta-label">זמן הכנה</div></div>
+          <div class="meta-item"><div class="meta-value">${recipe.difficulty}</div><div class="meta-label">רמה</div></div>
         </div>
         <div class="section">
-          <div class="section-title">Ingredients</div>
+          <div class="section-title">מצרכים</div>
           ${ingredients}
         </div>
         <div class="section">
-          <div class="section-title">Instructions</div>
+          <div class="section-title">אופו הכנה</div>
           ${steps}
         </div>
         <div class="section">
-          <button onclick="openEdit()" class="edit-btn">✏️ Edit Recipe</button>
+          <button onclick="openEdit()" class="edit-btn">✏️ ערוך מתכון</button>
         </div>
       `;
-      document.getElementById('edit-cancel').addEventListener('click', () => {
-    document.getElementById('edit-overlay').style.display = 'none';
-  });
 
-  document.getElementById('edit-save').addEventListener('click', async () => {
+      document.getElementById('edit-cancel').addEventListener('click', () => {
+        document.getElementById('edit-overlay').style.display = 'none';
+      });
+
+      document.getElementById('edit-save').addEventListener('click', async () => {
+        const updated = {
+          emoji: document.getElementById('edit-emoji').value,
+          title: document.getElementById('edit-title').value,
+          prep_time: document.getElementById('edit-prep_time').value,
+          difficulty: document.getElementById('edit-difficulty').value,
+          description: document.getElementById('edit-description').value,
+          ingredients: document.getElementById('edit-ingredients').value,
+          steps: document.getElementById('edit-steps').value,
+        };
+
+        await fetch(`http://localhost:3000/api/recipes/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        });
+
+        document.getElementById('edit-overlay').style.display = 'none';
+        window.location.href = `recipe.html?id=${id}`;
+      });
     });
 
   function openEdit() {
@@ -75,61 +95,40 @@
     document.getElementById('edit-steps').value = currentRecipe.steps;
     document.getElementById('edit-overlay').style.display = 'flex';
   }
-
-  
-    const updated = {
-      emoji: document.getElementById('edit-emoji').value,
-      title: document.getElementById('edit-title').value,
-      prep_time: document.getElementById('edit-prep_time').value,
-      difficulty: document.getElementById('edit-difficulty').value,
-      description: document.getElementById('edit-description').value,
-      ingredients: document.getElementById('edit-ingredients').value,
-      steps: document.getElementById('edit-steps').value,
-    };
-
-    await fetch(`http://localhost:3000/api/recipes/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updated)
-    });
-
-    document.getElementById('edit-overlay').style.display = 'none';
-    location.reload();
-  });
 </script>
 <!-- Edit Recipe Form -->
 <div class="overlay" id="edit-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(122,53,32,0.3);justify-content:center;align-items:center;z-index:100;">
   <div class="form-card">
-    <h2>✏️ Edit Recipe</h2>
+    <h2>✏️ עריכת מתכון</h2>
 
     <label>Emoji</label>
     <input type="text" id="edit-emoji" maxlength="2">
 
-    <label>Title</label>
+    <label>כותרת</label>
     <input type="text" id="edit-title">
 
-    <label>Prep Time</label>
+    <label>זמן הכנה</label>
     <input type="text" id="edit-prep_time">
 
-    <label>Difficulty</label>
+    <label>רמת קושי</label>
     <select id="edit-difficulty">
-      <option>Easy</option>
-      <option>Medium</option>
-      <option>Hard</option>
+      <option>קל</option>
+      <option>בינוני</option>
+      <option>קשה</option>
     </select>
 
-    <label>Description</label>
+    <label>תיאור</label>
     <input type="text" id="edit-description">
 
-    <label>Ingredients (one per line)</label>
+    <label>מצרכים (אחד לשורה)</label>
     <textarea id="edit-ingredients" rows="4"></textarea>
 
-    <label>Instructions (one per line)</label>
+    <label>אופן הכנה (אחד לשורה)</label>
     <textarea id="edit-steps" rows="4"></textarea>
 
     <div class="form-buttons">
-      <button id="edit-cancel">Cancel</button>
-      <button id="edit-save">Save Changes</button>
+      <button id="edit-cancel">ביטול</button>
+      <button id="edit-save">שמור שינויים</button>
     </div>
   </div>
 </div>
