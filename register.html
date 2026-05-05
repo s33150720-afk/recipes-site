@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>הרשמה</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <div class="auth-card">
+    <div class="auth-header">
+      <img src="ice-cream.png" style="width:60px;height:60px;">
+      <h1>ספר המתכונים שלי</h1>
+      <p>צרי חשבון חדש</p>
+    </div>
+
+    <div id="error-msg" class="error-msg" style="display:none;"></div>
+
+    <label>שם</label>
+    <input type="text" id="name" placeholder="שם מלא">
+
+    <label>אימייל</label>
+    <input type="email" id="email" placeholder="your@email.com">
+
+    <label>סיסמה</label>
+    <input type="password" id="password" placeholder="••••••••">
+
+    <button id="register-btn">הירשמי</button>
+
+    <p class="switch">כבר יש לך חשבון? <a href="login.html">התחברי כאן</a></p>
+  </div>
+
+  <script>
+    document.getElementById('register-btn').addEventListener('click', async () => {
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      const res = await fetch('http://localhost:3000/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+
+      const data = await res.json();
+
+      if (data.error) {
+        const err = document.getElementById('error-msg');
+        err.textContent = data.error;
+        err.style.display = 'block';
+      } else {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('name', data.name);
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

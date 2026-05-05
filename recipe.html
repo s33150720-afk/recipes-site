@@ -16,6 +16,8 @@
   </div>
 
   <script>
+    const token = localStorage.getItem('token');
+if (!token) window.location.href = 'login.html';
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   let currentRecipe = null;
@@ -65,22 +67,28 @@
 
       document.getElementById('edit-save').addEventListener('click', async () => {
         const updated = {
-          emoji: document.getElementById('edit-emoji').value,
-          title: document.getElementById('edit-title').value,
-          prep_time: document.getElementById('edit-prep_time').value,
-          difficulty: document.getElementById('edit-difficulty').value,
-          description: document.getElementById('edit-description').value,
-          ingredients: document.getElementById('edit-ingredients').value,
-          steps: document.getElementById('edit-steps').value,
-          dish_type: document.getElementById('edit-dish_type').value,
-        };
+  emoji: document.getElementById('edit-emoji').value,
+  title: document.getElementById('edit-title').value,
+  prep_time: document.getElementById('edit-prep_time').value,
+  difficulty: document.getElementById('edit-difficulty').value,
+  description: document.getElementById('edit-description').value,
+  ingredients: document.getElementById('edit-ingredients').value,
+  steps: document.getElementById('edit-steps').value,
+  category: document.getElementById('edit-category').value,
+  dish_type: document.getElementById('edit-dish_type').value,
+};
 
         await fetch(`http://localhost:3000/api/recipes/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(updated)
-        });
-
+  method: 'PUT',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': token
+  },
+  body: JSON.stringify(updated)
+});
+           fetch(`http://localhost:3000/api/recipes/${id}`, {
+  headers: { 'Authorization': token }
+})
         document.getElementById('edit-overlay').style.display = 'none';
         window.location.href = `recipe.html?id=${id}`;
       });
@@ -133,7 +141,7 @@
   <option>עוגות ועוגיות</option>
   <option>סלטים</option>
   <option>תוספות</option>
-  <option>ממרחים</option>
+  <option>מטבלים</option>
   <option>מרקים</option>
 </select>
 

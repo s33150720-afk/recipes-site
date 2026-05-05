@@ -1,18 +1,43 @@
+const token = localStorage.getItem('token');
+const userName = localStorage.getItem('name');
+
+if (!token) {
+  window.location.href = 'login.html';
+}
+
 const API = 'http://localhost:3000/api/recipes';
 let allRecipes = [];
 let activeKosher = 'הכל';
 let activeDish = 'הכל';
 
 async function loadRecipes() {
-  const res = await fetch(API);
+  const res = await fetch(API, {
+    headers: { 'Authorization': token }
+  });
   allRecipes = await res.json();
   renderRecipes();
 }
-
+await fetch(API, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': token
+  },
+  body: JSON.stringify(recipe)
+});
 function setKosher(value, btn) {
   activeKosher = value;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+
+  const dishFilters = document.getElementById('dish-filters');
+  if (value === 'הכל') {
+    dishFilters.style.display = 'none';
+    activeDish = 'הכל';
+  } else {
+    dishFilters.style.display = 'flex';
+  }
+
   renderRecipes();
 }
 
@@ -96,5 +121,11 @@ document.getElementById('save-btn').addEventListener('click', async () => {
   document.getElementById('overlay').style.display = 'none';
   loadRecipes();
 });
+document.getElementById('welcome-msg').textContent = `שלום, ${userName}! 👋`;
 
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('name');
+  window.location.href = 'login.html';
+}
 loadRecipes();

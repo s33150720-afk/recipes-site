@@ -43,6 +43,10 @@
       <circle cx="330" cy="104" r="1.2" fill="#B85C38"/>
       <circle cx="323" cy="104" r="1.2" fill="#B85C38"/>
     </svg>
+    <div class="user-bar">
+  <span id="welcome-msg"></span>
+  <button onclick="logout()" class="logout-btn">התנתקי</button>
+</div>
 <h1><img src="ice-cream.png" style="width:48px; height:48px; vertical-align:middle; margin-right:10px;">ספר המתכונים שלי</h1>    <p>פשוט, מתכונים טעימים מהמטבח שלי</p>
   </header>
 
@@ -55,21 +59,17 @@
     <button class="filter-btn" onclick="setKosher('חלבי', this)">חלבי</button>
     <button class="filter-btn" onclick="setKosher('פרווה', this)">פרווה</button>
   </div>
-  <div class="filter-row">
+  <div class="filter-row" id="dish-filters" style="display:none;">
     <button class="filter-btn-dish active" onclick="setDish('הכל', this)">הכל</button>
     <button class="filter-btn-dish" onclick="setDish('מנות עיקריות', this)">מנות עיקריות</button>
     <button class="filter-btn-dish" onclick="setDish('עוגות ועוגיות', this)">עוגות ועוגיות</button>
     <button class="filter-btn-dish" onclick="setDish('סלטים', this)">סלטים</button>
     <button class="filter-btn-dish" onclick="setDish('תוספות', this)">תוספות</button>
-    <button class="filter-btn-dish" onclick="setDish('ממרחים', this)">ממרחים</button>
+    <button class="filter-btn-dish" onclick="setDish('מטבלים', this)">מטבלים</button>
     <button class="filter-btn-dish" onclick="setDish('מרקים', this)">מרקים</button>
   </div>
 </div>
-  <button class="filter-btn active" onclick="filterRecipes('הכל')">הכל</button>
-  <button class="filter-btn" onclick="filterRecipes('פרווה')">פרווה</button>
-  <button class="filter-btn" onclick="filterRecipes('חלבי')">חלבי</button>
-  <button class="filter-btn" onclick="filterRecipes('בשרי')">בשרי</button>
-</div>
+ </div>
     <div class="grid" id="recipe-grid"></div>
   </main>
 
@@ -107,7 +107,7 @@
   <option>עוגות ועוגיות</option>
   <option>סלטים</option>
   <option>תוספות</option>
-  <option>ממרחים</option>
+  <option>מטבלים</option>
   <option>מרקים</option>
 </select>
       <label>תיאור</label>
