@@ -72,6 +72,7 @@
           description: document.getElementById('edit-description').value,
           ingredients: document.getElementById('edit-ingredients').value,
           steps: document.getElementById('edit-steps').value,
+          dish_type: document.getElementById('edit-dish_type').value,
         };
 
         await fetch(`http://localhost:3000/api/recipes/${id}`, {
@@ -86,15 +87,17 @@
     });
 
   function openEdit() {
-    document.getElementById('edit-emoji').value = currentRecipe.emoji || '';
-    document.getElementById('edit-title').value = currentRecipe.title;
-    document.getElementById('edit-prep_time').value = currentRecipe.prep_time;
-    document.getElementById('edit-difficulty').value = currentRecipe.difficulty;
-    document.getElementById('edit-description').value = currentRecipe.description;
-    document.getElementById('edit-ingredients').value = currentRecipe.ingredients;
-    document.getElementById('edit-steps').value = currentRecipe.steps;
-    document.getElementById('edit-overlay').style.display = 'flex';
-  }
+  document.getElementById('edit-emoji').value = currentRecipe.emoji || '';
+  document.getElementById('edit-title').value = currentRecipe.title;
+  document.getElementById('edit-prep_time').value = currentRecipe.prep_time;
+  document.getElementById('edit-difficulty').value = currentRecipe.difficulty;
+  document.getElementById('edit-description').value = currentRecipe.description;
+  document.getElementById('edit-ingredients').value = currentRecipe.ingredients;
+  document.getElementById('edit-steps').value = currentRecipe.steps;
+  document.getElementById('edit-category').value = currentRecipe.category || 'פרווה';
+  document.getElementById('edit-dish_type').value = currentRecipe.dish_type || 'מנות עיקריות';
+  document.getElementById('edit-overlay').style.display = 'flex';
+}
 </script>
 <!-- Edit Recipe Form -->
 <div class="overlay" id="edit-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(122,53,32,0.3);justify-content:center;align-items:center;z-index:100;">
@@ -116,6 +119,23 @@
       <option>בינוני</option>
       <option>קשה</option>
     </select>
+
+    <label>קטגוריה</label>
+<select id="edit-category">
+  <option>פרווה</option>
+  <option>חלבי</option>
+  <option>בשרי</option>
+</select>
+
+<label>סוג מנה</label>
+<select id="edit-dish_type">
+  <option>מנות עיקריות</option>
+  <option>עוגות ועוגיות</option>
+  <option>סלטים</option>
+  <option>תוספות</option>
+  <option>ממרחים</option>
+  <option>מרקים</option>
+</select>
 
     <label>תיאור</label>
     <input type="text" id="edit-description">

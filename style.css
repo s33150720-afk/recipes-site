@@ -10,7 +10,8 @@ body {
 }
 
 .back-btn {
-  display: inline-block;
+  display: block;
+  width: fit-content;
   margin: 0 auto 20px;
   padding: 8px 18px;
   background: #FDE8DF;
@@ -19,11 +20,12 @@ body {
   text-decoration: none;
   font-size: 13px;
   font-weight: 600;
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
 }
 
+
+.back-btn:hover {
+  background: #F5C8B8;
+}
 .recipe-card {
   max-width: 680px;
   margin: 0 auto;

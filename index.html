@@ -49,6 +49,22 @@
   <main>
     <div class="section-label">המתכונים שלי</div>
     <div class="filters">
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setKosher('הכל', this)">הכל</button>
+    <button class="filter-btn" onclick="setKosher('בשרי', this)">בשרי</button>
+    <button class="filter-btn" onclick="setKosher('חלבי', this)">חלבי</button>
+    <button class="filter-btn" onclick="setKosher('פרווה', this)">פרווה</button>
+  </div>
+  <div class="filter-row">
+    <button class="filter-btn-dish active" onclick="setDish('הכל', this)">הכל</button>
+    <button class="filter-btn-dish" onclick="setDish('מנות עיקריות', this)">מנות עיקריות</button>
+    <button class="filter-btn-dish" onclick="setDish('עוגות ועוגיות', this)">עוגות ועוגיות</button>
+    <button class="filter-btn-dish" onclick="setDish('סלטים', this)">סלטים</button>
+    <button class="filter-btn-dish" onclick="setDish('תוספות', this)">תוספות</button>
+    <button class="filter-btn-dish" onclick="setDish('ממרחים', this)">ממרחים</button>
+    <button class="filter-btn-dish" onclick="setDish('מרקים', this)">מרקים</button>
+  </div>
+</div>
   <button class="filter-btn active" onclick="filterRecipes('הכל')">הכל</button>
   <button class="filter-btn" onclick="filterRecipes('פרווה')">פרווה</button>
   <button class="filter-btn" onclick="filterRecipes('חלבי')">חלבי</button>
@@ -85,6 +101,15 @@
   <option>בשרי</option>
 </select>
 
+<label>סוג מנה</label>
+<select id="dish_type">
+  <option>מנות עיקריות</option>
+  <option>עוגות ועוגיות</option>
+  <option>סלטים</option>
+  <option>תוספות</option>
+  <option>ממרחים</option>
+  <option>מרקים</option>
+</select>
       <label>תיאור</label>
       <input type="text" id="description" placeholder="One line about the recipe">
 

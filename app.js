@@ -1,40 +1,52 @@
 const API = 'http://localhost:3000/api/recipes';
 let allRecipes = [];
+let activeKosher = 'הכל';
+let activeDish = 'הכל';
 
 async function loadRecipes() {
   const res = await fetch(API);
   allRecipes = await res.json();
-  renderRecipes(allRecipes);
+  renderRecipes();
 }
 
-function filterRecipes(category) {
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-
-  if (category === 'הכל') {
-    renderRecipes(allRecipes);
-  } else {
-    renderRecipes(allRecipes.filter(r => r.category === category));
-  }
+function setKosher(value, btn) {
+  activeKosher = value;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRecipes();
 }
 
-function renderRecipes(recipes) {
+function setDish(value, btn) {
+  activeDish = value;
+  document.querySelectorAll('.filter-btn-dish').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderRecipes();
+}
+
+function renderRecipes() {
   const grid = document.getElementById('recipe-grid');
   grid.innerHTML = '';
 
-  if (recipes.length === 0) {
-    grid.innerHTML = '<p style="color:#D4856A; text-align:center; width:100%;">אין מתכונים בקטגוריה זו עדיין</p>';
+  let filtered = allRecipes;
+  if (activeKosher !== 'הכל') filtered = filtered.filter(r => r.category === activeKosher);
+  if (activeDish !== 'הכל') filtered = filtered.filter(r => r.dish_type === activeDish);
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '<p style="color:#D4856A;text-align:center;width:100%;padding:20px;">אין מתכונים בקטגוריה זו עדיין</p>';
   } else {
-    recipes.forEach(recipe => {
+    filtered.forEach(recipe => {
       const card = document.createElement('a');
       card.className = 'card';
       card.href = `recipe.html?id=${recipe.id}`;
       card.innerHTML = `
-        <div class="card-emoji">${recipe.emoji || '🍽️'}</div>
+        <div class="card-emoji">${recipe.emoji || '<img src="cutlery.png" style="width:48px;height:48px;">'}</div>
         <div class="card-body">
           <div class="card-title">${recipe.title}</div>
           <div class="card-meta">${recipe.difficulty} · ${recipe.prep_time}</div>
-          <div class="card-category">${recipe.category || 'פרווה'}</div>
+          <div class="card-tags">
+            <span class="card-category">${recipe.category || 'פרווה'}</span>
+            <span class="card-dish">${recipe.dish_type || ''}</span>
+          </div>
         </div>
       `;
       grid.appendChild(card);
@@ -67,6 +79,7 @@ document.getElementById('save-btn').addEventListener('click', async () => {
     ingredients: document.getElementById('ingredients').value,
     steps: document.getElementById('steps').value,
     category: document.getElementById('category').value,
+    dish_type: document.getElementById('dish_type').value,
   };
 
   if (!recipe.title) {
