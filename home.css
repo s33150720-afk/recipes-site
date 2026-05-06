@@ -10,11 +10,11 @@ body {
 }
 
 header {
+  position: relative;
   background: #FFF0EA;
   border-bottom: 0.5px solid #F5C8B8;
   padding: 40px 24px 32px;
   text-align: center;
-  position: relative;
   overflow: hidden;
 }
 
@@ -311,14 +311,25 @@ main {
 .user-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 12px;
-  position: relative;
+  justify-content: space-between;
+  padding: 10px 24px 0;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
 }
-
+.welcome-badge {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid #F5C8B8;
+  border-radius: 20px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #B85C38;
+}
 .logout-btn {
-  padding: 6px 16px;
+  padding: 5px 14px;
   background: transparent;
   border: 1px solid #D4856A;
   border-radius: 20px;
@@ -326,6 +337,7 @@ main {
   font-size: 12px;
   font-family: 'Comfortaa', sans-serif;
   cursor: pointer;
+  transition: all 0.2s;
 }
 
 .logout-btn:hover {

@@ -16,7 +16,12 @@ const db = new sqlite3.Database('./recipes.db', (err) => {
   if (err) console.error(err.message);
   else console.log('Connected to SQLite database.');
 });
-
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
+});
+const upload = multer({ storage });
 // Create tables
 db.serialize(() => {
   db.run(`
@@ -134,7 +139,14 @@ app.put('/api/recipes/:id', auth, (req, res) => {
     }
   );
 });
+// Serve uploaded images
+app.use('/uploads', express.static('uploads'));
 
+// Upload image
+app.post('/api/upload', auth, upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'לא נבחרה תמונה' });
+  res.json({ path: `/uploads/${req.file.filename}` });
+});
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });

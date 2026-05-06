@@ -22,7 +22,9 @@ if (!token) window.location.href = 'login.html';
   const id = params.get('id');
   let currentRecipe = null;
 
-  fetch(`http://localhost:3000/api/recipes/${id}`)
+  fetch(`http://localhost:3000/api/recipes/${id}`, {
+  headers: { 'Authorization': token }
+})
     .then(res => res.json())
     .then(recipe => {
       currentRecipe = recipe;
@@ -40,7 +42,9 @@ if (!token) window.location.href = 'login.html';
 
       document.getElementById('recipe-container').innerHTML = `
         <div class="recipe-hero">
-          <span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>
+          ${recipe.emoji && recipe.emoji.startsWith('/uploads/') 
+  ? `<img src="${recipe.emoji}" style="width:100%;height:220px;object-fit:cover;border-radius:0;">` 
+  : `<span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>`}
           <div class="recipe-title">${recipe.title}</div>
           <div class="recipe-subtitle">${recipe.description}</div>
         </div>

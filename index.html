@@ -44,9 +44,10 @@
       <circle cx="323" cy="104" r="1.2" fill="#B85C38"/>
     </svg>
     <div class="user-bar">
-  <span id="welcome-msg"></span>
+<div class="welcome-badge" id="welcome-msg"></div>
   <button onclick="logout()" class="logout-btn">התנתקי</button>
-</div>
+  </div>
+
 <h1><img src="ice-cream.png" style="width:48px; height:48px; vertical-align:middle; margin-right:10px;">ספר המתכונים שלי</h1>    <p>פשוט, מתכונים טעימים מהמטבח שלי</p>
   </header>
 
@@ -79,7 +80,12 @@
       <h2>✨ מתכון חדש</h2>
 
       <label>אמוג'י</label>
-      <input type="text" id="emoji" placeholder="🍕" maxlength="2">
+      <label>תמונה או אימוג'י</label>
+<div class="image-or-emoji">
+  <input type="text" id="emoji" placeholder="🍕" maxlength="2">
+  <span style="font-size:12px;color:#D4856A;margin:0 8px;">או</span>
+  <input type="file" id="image-upload" accept="image/*" style="font-size:12px;">
+</div>
 
       <label>כותרת</label>
       <input type="text" id="title" placeholder="Recipe name">

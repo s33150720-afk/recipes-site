@@ -10,6 +10,14 @@ let allRecipes = [];
 let activeKosher = 'הכל';
 let activeDish = 'הכל';
 
+document.getElementById('welcome-msg').textContent = `הי ${userName} ! `;
+
+function logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('name');
+  window.location.href = 'login.html';
+}
+
 async function loadRecipes() {
   const res = await fetch(API, {
     headers: { 'Authorization': token }
@@ -17,14 +25,7 @@ async function loadRecipes() {
   allRecipes = await res.json();
   renderRecipes();
 }
-await fetch(API, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': token
-  },
-  body: JSON.stringify(recipe)
-});
+
 function setKosher(value, btn) {
   activeKosher = value;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -77,7 +78,22 @@ function renderRecipes() {
       grid.appendChild(card);
     });
   }
-
+const isImage = recipe.emoji && recipe.emoji.startsWith('/uploads/');
+card.innerHTML = `
+  <div class="card-emoji">
+    ${isImage 
+      ? `<img src="${recipe.emoji}" style="width:100%;height:140px;object-fit:cover;">` 
+      : (recipe.emoji || '<img src="cutlery.png" style="width:48px;height:48px;">')}
+  </div>
+  <div class="card-body">
+    <div class="card-title">${recipe.title}</div>
+    <div class="card-meta">${recipe.difficulty} · ${recipe.prep_time}</div>
+    <div class="card-tags">
+      <span class="card-category">${recipe.category || 'פרווה'}</span>
+      <span class="card-dish">${recipe.dish_type || ''}</span>
+    </div>
+  </div>
+`;
   const addCard = document.createElement('div');
   addCard.className = 'add-card';
   addCard.innerHTML = `
@@ -95,8 +111,23 @@ document.getElementById('cancel-btn').addEventListener('click', () => {
 });
 
 document.getElementById('save-btn').addEventListener('click', async () => {
+  let imagePath = null;
+  const imageFile = document.getElementById('image-upload').files[0];
+
+  if (imageFile) {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    const uploadRes = await fetch('http://localhost:3000/api/upload', {
+      method: 'POST',
+      headers: { 'Authorization': token },
+      body: formData
+    });
+    const uploadData = await uploadRes.json();
+    imagePath = uploadData.path;
+  }
+
   const recipe = {
-    emoji: document.getElementById('emoji').value,
+    emoji: imagePath || document.getElementById('emoji').value,
     title: document.getElementById('title').value,
     prep_time: document.getElementById('prep_time').value,
     difficulty: document.getElementById('difficulty').value,
@@ -114,18 +145,15 @@ document.getElementById('save-btn').addEventListener('click', async () => {
 
   await fetch(API, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    },
     body: JSON.stringify(recipe)
   });
 
   document.getElementById('overlay').style.display = 'none';
   loadRecipes();
 });
-document.getElementById('welcome-msg').textContent = `שלום, ${userName}! 👋`;
 
-function logout() {
-  localStorage.removeItem('token');
-  localStorage.removeItem('name');
-  window.location.href = 'login.html';
-}
 loadRecipes();
