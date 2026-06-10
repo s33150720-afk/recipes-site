@@ -60,40 +60,30 @@ function renderRecipes() {
   if (filtered.length === 0) {
     grid.innerHTML = '<p style="color:#D4856A;text-align:center;width:100%;padding:20px;">אין מתכונים בקטגוריה זו עדיין</p>';
   } else {
-    filtered.forEach(recipe => {
-      const card = document.createElement('a');
-      card.className = 'card';
-      card.href = `recipe.html?id=${recipe.id}`;
-      card.innerHTML = `
-        <div class="card-emoji">${recipe.emoji || '<img src="cutlery.png" style="width:48px;height:48px;">'}</div>
-        <div class="card-body">
-          <div class="card-title">${recipe.title}</div>
-          <div class="card-meta">${recipe.difficulty} · ${recipe.prep_time}</div>
-          <div class="card-tags">
-            <span class="card-category">${recipe.category || 'פרווה'}</span>
-            <span class="card-dish">${recipe.dish_type || ''}</span>
-          </div>
-        </div>
-      `;
-      grid.appendChild(card);
-    });
-  }
-const isImage = recipe.emoji && recipe.emoji.startsWith('/uploads/');
-card.innerHTML = `
-  <div class="card-emoji">
-    ${isImage 
-      ? `<img src="${recipe.emoji}" style="width:100%;height:140px;object-fit:cover;">` 
-      : (recipe.emoji || '<img src="cutlery.png" style="width:48px;height:48px;">')}
-  </div>
-  <div class="card-body">
-    <div class="card-title">${recipe.title}</div>
-    <div class="card-meta">${recipe.difficulty} · ${recipe.prep_time}</div>
-    <div class="card-tags">
-      <span class="card-category">${recipe.category || 'פרווה'}</span>
-      <span class="card-dish">${recipe.dish_type || ''}</span>
+    filtered.forEach(r => {
+  const card = document.createElement('a');
+  card.className = 'card';
+  card.href = `recipe.html?id=${r.id}`;
+  const isImage = r.emoji && r.emoji.startsWith('/uploads/');
+  card.innerHTML = `
+    <div class="card-emoji">
+      ${isImage 
+        ? `<img src="${r.emoji}" style="width:100%;height:140px;object-fit:cover;">` 
+        : (r.emoji || '<img src="cutlery.png" style="width:48px;height:48px;">')}
     </div>
-  </div>
-`;
+    <div class="card-body">
+      <div class="card-title">${r.title}</div>
+      <div class="card-meta">${r.difficulty} · ${r.prep_time}</div>
+      <div class="card-tags">
+        <span class="card-category">${r.category || 'פרווה'}</span>
+        <span class="card-dish">${r.dish_type || ''}</span>
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+  }
+
   const addCard = document.createElement('div');
   addCard.className = 'add-card';
   addCard.innerHTML = `

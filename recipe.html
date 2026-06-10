@@ -16,108 +16,126 @@
   </div>
 
   <script>
-    const token = localStorage.getItem('token');
-if (!token) window.location.href = 'login.html';
+  const token = localStorage.getItem('token');
+  if (!token) window.location.href = 'login.html';
+  
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
   let currentRecipe = null;
 
   fetch(`http://localhost:3000/api/recipes/${id}`, {
-  headers: { 'Authorization': token }
-})
-    .then(res => res.json())
-    .then(recipe => {
-      currentRecipe = recipe;
-      document.title = recipe.title;
+    headers: { 'Authorization': token }
+  })
+  .then(res => res.json())
+  .then(recipe => {
+    currentRecipe = recipe;
+    document.title = recipe.title;
 
-      const ingredients = recipe.ingredients
-        .split('\n')
-        .map(i => `<div class="ingredient"><span class="ingredient-amount">•</span><span>${i}</span></div>`)
-        .join('');
+    const ingredients = recipe.ingredients
+      .split('\n')
+      .map(i => `<div class="ingredient"><span class="ingredient-amount">•</span><span>${i}</span></div>`)
+      .join('');
 
-      const steps = recipe.steps
-        .split('\n')
-        .map((s, i) => `<div class="step"><div class="step-num">${i + 1}</div><div class="step-text">${s}</div></div>`)
-        .join('');
+    const steps = recipe.steps
+      .split('\n')
+      .map((s, i) => `<div class="step"><div class="step-num">${i + 1}</div><div class="step-text">${s}</div></div>`)
+      .join('');
 
-      document.getElementById('recipe-container').innerHTML = `
-        <div class="recipe-hero">
-          ${recipe.emoji && recipe.emoji.startsWith('/uploads/') 
-  ? `<img src="${recipe.emoji}" style="width:100%;height:220px;object-fit:cover;border-radius:0;">` 
-  : `<span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>`}
-          <div class="recipe-title">${recipe.title}</div>
-          <div class="recipe-subtitle">${recipe.description}</div>
-        </div>
-        <div class="meta-row">
-          <div class="meta-item"><div class="meta-value">${recipe.prep_time}</div><div class="meta-label">זמן הכנה</div></div>
-          <div class="meta-item"><div class="meta-value">${recipe.difficulty}</div><div class="meta-label">רמה</div></div>
-        </div>
-        <div class="section">
-          <div class="section-title">מצרכים</div>
-          ${ingredients}
-        </div>
-        <div class="section">
-          <div class="section-title">אופו הכנה</div>
-          ${steps}
-        </div>
-        <div class="section">
-          <button onclick="openEdit()" class="edit-btn">✏️ ערוך מתכון</button>
-        </div>
-      `;
+    document.getElementById('recipe-container').innerHTML = `
+      <div class="recipe-hero">
+        ${recipe.emoji && recipe.emoji.startsWith('/uploads/') 
+          ? `<img src="${recipe.emoji}" style="width:100%;height:220px;object-fit:cover;border-radius:0;">` 
+          : `<span class="recipe-emoji">${recipe.emoji || '🍽️'}</span>`}
+        <div class="recipe-title">${recipe.title}</div>
+        <div class="recipe-subtitle">${recipe.description}</div>
+      </div>
+      <div class="meta-row">
+        <div class="meta-item"><div class="meta-value">${recipe.prep_time}</div><div class="meta-label">זמן הכנה</div></div>
+        <div class="meta-item"><div class="meta-value">${recipe.difficulty}</div><div class="meta-label">רמה</div></div>
+      </div>
+      <div class="section">
+        <div class="section-title">מצרכים</div>
+        ${ingredients}
+      </div>
+      <div class="section">
+        <div class="section-title">אופן הכנה</div>
+        ${steps}
+      </div>
+      <div class="section">
+        <button onclick="openEdit()" class="edit-btn">✏️ ערוך מתכון</button>
+      </div>
+    `;
 
-      document.getElementById('edit-cancel').addEventListener('click', () => {
-        document.getElementById('edit-overlay').style.display = 'none';
-      });
-
-      document.getElementById('edit-save').addEventListener('click', async () => {
-        const updated = {
-  emoji: document.getElementById('edit-emoji').value,
-  title: document.getElementById('edit-title').value,
-  prep_time: document.getElementById('edit-prep_time').value,
-  difficulty: document.getElementById('edit-difficulty').value,
-  description: document.getElementById('edit-description').value,
-  ingredients: document.getElementById('edit-ingredients').value,
-  steps: document.getElementById('edit-steps').value,
-  category: document.getElementById('edit-category').value,
-  dish_type: document.getElementById('edit-dish_type').value,
-};
-
-        await fetch(`http://localhost:3000/api/recipes/${id}`, {
-  method: 'PUT',
-  headers: {
-    'Content-Type': 'application/json',
-    'Authorization': token
-  },
-  body: JSON.stringify(updated)
-});
-           fetch(`http://localhost:3000/api/recipes/${id}`, {
-  headers: { 'Authorization': token }
-})
-        document.getElementById('edit-overlay').style.display = 'none';
-        window.location.href = `recipe.html?id=${id}`;
-      });
+    document.getElementById('edit-cancel').addEventListener('click', () => {
+      document.getElementById('edit-overlay').style.display = 'none';
     });
 
+    document.getElementById('edit-save').addEventListener('click', async () => {
+      let imagePath = null;
+      const imageFile = document.getElementById('edit-image-upload').files[0];
+
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        const uploadRes = await fetch('http://localhost:3000/api/upload', {
+          method: 'POST',
+          headers: { 'Authorization': token },
+          body: formData
+        });
+        const uploadData = await uploadRes.json();
+        imagePath = uploadData.path;
+      }
+
+      const updated = {
+        emoji: imagePath || document.getElementById('edit-emoji').value,
+        title: document.getElementById('edit-title').value,
+        prep_time: document.getElementById('edit-prep_time').value,
+        difficulty: document.getElementById('edit-difficulty').value,
+        description: document.getElementById('edit-description').value,
+        ingredients: document.getElementById('edit-ingredients').value,
+        steps: document.getElementById('edit-steps').value,
+        category: document.getElementById('edit-category').value,
+        dish_type: document.getElementById('edit-dish_type').value,
+      };
+
+      await fetch(`http://localhost:3000/api/recipes/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify(updated)
+      });
+
+      document.getElementById('edit-overlay').style.display = 'none';
+      window.location.href = `recipe.html?id=${id}`;
+    });
+  });
+
   function openEdit() {
-  document.getElementById('edit-emoji').value = currentRecipe.emoji || '';
-  document.getElementById('edit-title').value = currentRecipe.title;
-  document.getElementById('edit-prep_time').value = currentRecipe.prep_time;
-  document.getElementById('edit-difficulty').value = currentRecipe.difficulty;
-  document.getElementById('edit-description').value = currentRecipe.description;
-  document.getElementById('edit-ingredients').value = currentRecipe.ingredients;
-  document.getElementById('edit-steps').value = currentRecipe.steps;
-  document.getElementById('edit-category').value = currentRecipe.category || 'פרווה';
-  document.getElementById('edit-dish_type').value = currentRecipe.dish_type || 'מנות עיקריות';
-  document.getElementById('edit-overlay').style.display = 'flex';
-}
+    document.getElementById('edit-emoji').value = currentRecipe.emoji && currentRecipe.emoji.startsWith('/uploads/') ? '' : (currentRecipe.emoji || '');
+    document.getElementById('edit-title').value = currentRecipe.title;
+    document.getElementById('edit-prep_time').value = currentRecipe.prep_time;
+    document.getElementById('edit-difficulty').value = currentRecipe.difficulty;
+    document.getElementById('edit-description').value = currentRecipe.description;
+    document.getElementById('edit-ingredients').value = currentRecipe.ingredients;
+    document.getElementById('edit-steps').value = currentRecipe.steps;
+    document.getElementById('edit-category').value = currentRecipe.category || 'פרווה';
+    document.getElementById('edit-dish_type').value = currentRecipe.dish_type || 'מנות עיקריות';
+    document.getElementById('edit-overlay').style.display = 'flex';
+  }
 </script>
 <!-- Edit Recipe Form -->
 <div class="overlay" id="edit-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(122,53,32,0.3);justify-content:center;align-items:center;z-index:100;">
   <div class="form-card">
     <h2>✏️ עריכת מתכון</h2>
 
-    <label>Emoji</label>
-    <input type="text" id="edit-emoji" maxlength="2">
+    <label>תמונה או אימוג'י</label>
+<div class="image-or-emoji">
+  <input type="text" id="edit-emoji" placeholder="🍕" maxlength="2">
+  <span style="font-size:12px;color:#D4856A;margin:0 8px;">או</span>
+  <input type="file" id="edit-image-upload" accept="image/*" style="font-size:12px;">
+</div>
 
     <label>כותרת</label>
     <input type="text" id="edit-title">
